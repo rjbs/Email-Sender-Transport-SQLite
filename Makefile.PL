@@ -1,4 +1,3 @@
-require 5.006001;
 use inc::Module::Install;
 
 name          'Email-Sender-Transport-SQLite';
@@ -7,7 +6,7 @@ license       'perl';
 version_from  'lib/Email/Sender/Transport/SQLite.pm';
 
 # NON-CORE PREREQUISITES
-requires('Email::Sender'   => 0.000); # first release is fine
+requires('Email::Sender'    => 0.004);   # moosified release
 requires('DBI'                  => 0);  # minimum unknown
 requires('DBD::SQLite'          => 0);  # minimum unknown
 

@@ -1,5 +1,8 @@
 Revision history for Email-Sender-Transport-SQLite
 
+0.002   2009-03-24
+        require latest Sender for moosification
+
 0.001   2008-12-10
         split out of Email-Sender
 

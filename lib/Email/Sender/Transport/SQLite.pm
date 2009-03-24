@@ -1,8 +1,8 @@
 package Email::Sender::Transport::SQLite;
-use Mouse;
+use Moose;
 extends 'Email::Sender::Transport';
 
-our $VERSION = '0.000';
+our $VERSION = '0.002';
 
 =head1 NAME
 
@@ -88,5 +88,5 @@ sub send_email {
 }
 
 __PACKAGE__->meta->make_immutable;
-no Mouse;
+no Moose;
 1;

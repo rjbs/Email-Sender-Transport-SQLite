@@ -14,7 +14,7 @@ my $db = File::Spec->catfile(
 );
 
 my $sender = Email::Sender::Transport::SQLite->new({ db_file => $db });
-isa_ok($sender, 'Email::Sender::Transport');
+ok($sender->does('Email::Sender::Transport'));
 isa_ok($sender, 'Email::Sender::Transport::SQLite');
 
 my $message = <<'END_MESSAGE';

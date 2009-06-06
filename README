@@ -1,4 +1,0 @@
-README for Email-Sender-Transport-SQLite
-
-  perl Makefile.PL && make && make test && sudo make install
-

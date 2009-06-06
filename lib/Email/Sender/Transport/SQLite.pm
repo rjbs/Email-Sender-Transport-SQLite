@@ -1,12 +1,36 @@
 package Email::Sender::Transport::SQLite;
 use Moose;
 with 'Email::Sender::Transport';
+# ABSTRACT: deliver mail to an sqlite db for testing
 
-our $VERSION = '0.002';
+=head1 DESCRIPTION
 
-=head1 NAME
+This transport makes deliveries to an SQLite database, creating it if needed.
+The SQLite transport is intended for testing programs that fork or that
+otherwise can't use the Test transport.  It is not meant for robust, long-term
+storage of mail.
 
-Email::Sender::Transport::SQLite - deliver mail to an sqlite db for testing
+The database will be created in the file named by the C<db_file> attribute,
+which defaults to F<email.db>.
+
+The database will have two tables:
+
+  CREATE TABLE emails (
+    id INTEGER PRIMARY KEY,
+    body     varchar NOT NULL,
+    env_from varchar NOT NULL
+  );
+
+  CREATE TABLE recipients (
+    id INTEGER PRIMARY KEY,
+    email_id integer NOT NULL,
+    env_to   varchar NOT NULL
+  );
+
+Each delivery will insert one row to the F<emails> table and one row per
+recipient to the F<recipients> table.
+
+Delivery to this transport should never fail.
 
 =cut
 
@@ -49,6 +73,7 @@ has db_file => (
 sub _setup_dbh {
   my ($self) = @_;
   my $dbh = $self->_dbh;
+
   $dbh->do('
     CREATE TABLE emails (
       id INTEGER PRIMARY KEY,
@@ -56,6 +81,7 @@ sub _setup_dbh {
       env_from varchar NOT NULL
     );
   ');
+
   $dbh->do('
     CREATE TABLE recipients (
       id INTEGER PRIMARY KEY,
@@ -74,14 +100,22 @@ sub send_email {
 
   my $dbh = $self->dbh;
 
-  $dbh->do("INSERT INTO emails (body, env_from) VALUES (?, ?)",
-    undef, $message, $from,);
+  $dbh->do(
+    "INSERT INTO emails (body, env_from) VALUES (?, ?)",
+    undef,
+    $message,
+    $from,
+  );
 
   my $id = $dbh->last_insert_id((undef) x 4);
 
   for my $addr (@$to) {
-    $dbh->do("INSERT INTO recipients (email_id, env_to) VALUES (?, ?)",
-      undef, $id, $addr,);
+    $dbh->do(
+      "INSERT INTO recipients (email_id, env_to) VALUES (?, ?)",
+      undef,
+      $id,
+      $addr,
+    );
   }
 
   return $self->success;

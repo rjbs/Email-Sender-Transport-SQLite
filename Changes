@@ -1,6 +1,7 @@
 Revision history for Email-Sender-Transport-SQLite
 
 {{$NEXT}}
+          convert to Moo
 
 0.092000  2011-10-15 18:09:14 Asia/Tokyo
           repackage to get META.yml

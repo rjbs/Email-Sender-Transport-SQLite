@@ -1,5 +1,5 @@
 package Email::Sender::Transport::SQLite;
-use Moose;
+use Moo;
 with 'Email::Sender::Transport';
 # ABSTRACT: deliver mail to an sqlite db for testing
 
@@ -67,7 +67,7 @@ sub dbh {
 
 has db_file => (
   is      => 'ro',
-  default => 'email.db',
+  default => sub { 'email.db' },
 );
 
 sub _setup_dbh {
@@ -122,5 +122,5 @@ sub send_email {
 }
 
 __PACKAGE__->meta->make_immutable;
-no Moose;
+no Moo;
 1;

@@ -1,6 +1,8 @@
 Revision history for Email-Sender-Transport-SQLite
 
 {{$NEXT}}
+
+0.092001  2013-03-02 15:43:49 America/New_York
           convert to Moo
 
 0.092000  2011-10-15 18:09:14 Asia/Tokyo

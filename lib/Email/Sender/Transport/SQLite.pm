@@ -1,7 +1,8 @@
 package Email::Sender::Transport::SQLite;
+# ABSTRACT: deliver mail to an sqlite db for testing
+
 use Moo;
 with 'Email::Sender::Transport';
-# ABSTRACT: deliver mail to an sqlite db for testing
 
 =head1 DESCRIPTION
 

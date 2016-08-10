@@ -1,6 +1,7 @@
 Revision history for Email-Sender-Transport-SQLite
 
 {{$NEXT}}
+          add retrieve_deliveries method to get deliveries back out of db
 
 0.092002  2013-08-22 17:20:14 America/New_York
           update repo and bugtracker

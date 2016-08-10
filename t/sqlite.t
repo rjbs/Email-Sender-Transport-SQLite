@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 5;
+use Test::More;
 use File::Spec;
 use File::Temp;
 
@@ -56,8 +56,33 @@ END_MESSAGE
   ok($result, 'success');
 }
 
-my $dbh = DBI->connect("dbi:SQLite:dbname=$db", undef, undef);
+subtest "get via a new dbh" => sub {
+  my $dbh = DBI->connect("dbi:SQLite:dbname=$db", undef, undef);
 
-my ($deliveries) = $dbh->selectrow_array("SELECT COUNT(*) FROM recipients");
+  my ($deliveries) = $dbh->selectrow_array("SELECT COUNT(*) FROM recipients");
 
-is($deliveries, 3, "we delivered to 3 addresses");
+  is($deliveries, 3, "we delivered to 3 addresses");
+};
+
+subtest "get via retrieve_deliveries" => sub {
+  my @deliveries = $sender->retrieve_deliveries;
+  is(@deliveries, 2, "2 deliveries from retrieve_deliveries");
+
+  is($deliveries[0]{id}, 1, "first delivery is id 1");
+  is($deliveries[0]{env_from}, 'nobody@nowhere.example.mil', "...from");
+  is_deeply(
+    [ sort @{ $deliveries[0]{env_to} } ],
+    [ 'recipient@nowhere.example.net' ],
+    "...to"
+  );
+
+  is($deliveries[1]{id}, 2, "first delivery is id 2");
+  is($deliveries[1]{env_from}, 'nobody@nowhere.example.mil', "...from");
+  is_deeply(
+    [ sort @{ $deliveries[1]{env_to} } ],
+    [ qw(dude@los-angeles.ca.mil recipient@nowhere.example.net) ],
+    "...to"
+  );
+};
+
+done_testing;

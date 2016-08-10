@@ -121,6 +121,49 @@ sub send_email {
   return $self->success;
 }
 
+=method retrieve_deliveries
+
+  my @deliveries = $transport->retrieve_deliveries;
+
+This method returns a list of deliveries made so far to this transport's
+database.  They're returned in order of insertion, and each delivery is a hash
+reference like this:
+
+  id       => $db_primary_key,
+  env_from => $envelope_sender,
+  env_to   => \@all_env_recipients,
+  message  => $text_of_email_sent
+
+More fields may be added in the future.
+
+=cut
+
+sub retrieve_deliveries {
+  my ($self) = @_;
+
+  my $rows = $self->dbh->selectall_arrayref(
+    "SELECT e.id, env_from, env_to, body
+    FROM emails e
+    JOIN recipients r ON r.email_id = e.id
+    ORDER BY e.id"
+  );
+
+  my %delivery;
+
+  for my $d (@$rows) {
+    $delivery{$d->[0]} ||= {
+      id       => $d->[0],
+      env_from => $d->[1],
+      env_to   => [ ],
+      message  => $d->[3],
+    };
+
+    push @{ $delivery{$d->[0]}{env_to} }, $d->[2];
+  }
+
+  return @delivery{ sort { $a <=> $b } keys %delivery };
+}
+
 __PACKAGE__->meta->make_immutable;
 no Moo;
 1;

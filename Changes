@@ -1,6 +1,8 @@
 Revision history for Email-Sender-Transport-SQLite
 
 {{$NEXT}}
+
+0.092004  2021-06-20 17:22:56-04:00 America/New_York
         - update author contact info
         - add perl support section to docs
 

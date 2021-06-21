@@ -2,6 +2,9 @@ Revision history for Email-Sender-Transport-SQLite
 
 {{$NEXT}}
 
+1.500     2021-06-20 20:31:52-04:00 America/New_York
+        - update version number for bookkeeping reasons
+
 0.092004  2021-06-20 17:22:56-04:00 America/New_York
         - update author contact info
         - add perl support section to docs
